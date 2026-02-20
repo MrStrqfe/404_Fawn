@@ -23,5 +23,11 @@
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["dictionary.json"],
+      "matches": ["<all_urls>"]
+    }
   ]
 }

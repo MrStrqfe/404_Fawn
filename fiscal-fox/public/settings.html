@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fiscal Fox — Settings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #1a1d23;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      background-color: #13151a;
+      border-right: 1px solid #2e323c;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px 24px;
+      border-bottom: 1px solid #2e323c;
+      margin-bottom: 16px;
+    }
+
+    .sidebar-logo span {
+      font-size: 18px;
+      font-weight: 700;
+      color: #61dafb;
+    }
+
+    .sidebar-logo .logo-icon {
+      font-size: 24px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 6px;
+      margin: 2px 8px;
+      font-size: 14px;
+      color: #a0a5b0;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-item:hover {
+      background: #2a2d36;
+      color: #e0e0e0;
+    }
+
+    .nav-item.active {
+      background: #1e3a5f;
+      color: #61dafb;
+    }
+
+    .nav-item .nav-icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .main {
+      margin-left: 220px;
+      padding: 40px 48px;
+      max-width: 860px;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 32px;
+    }
+
+    .section {
+      background: #21242d;
+      border: 1px solid #2e323c;
+      border-radius: 10px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #2e323c;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid #2a2d36;
+    }
+
+    .setting-row:last-child {
+      border-bottom: none;
+    }
+
+    .setting-info {
+      flex: 1;
+    }
+
+    .setting-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e0e0e0;
+      margin-bottom: 3px;
+    }
+
+    .setting-desc {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: #3a3d48;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #ffffff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background: #61dafb;
+    }
+
+    .toggle input:checked + .toggle-slider::before {
+      transform: translateX(20px);
+    }
+
+    /* Select */
+    .setting-select {
+      background: #2a2d36;
+      border: 1px solid #3a3d48;
+      border-radius: 6px;
+      color: #e0e0e0;
+      font-size: 13px;
+      padding: 6px 10px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .setting-select:focus {
+      border-color: #61dafb;
+    }
+
+    /* Version tag */
+    .version-tag {
+      font-size: 12px;
+      color: #6b7280;
+      padding: 16px 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">🦊</span>
+      <span>Fiscal Fox</span>
+    </div>
+    <div class="nav-item active">
+      <span class="nav-icon">⚙️</span> General
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">🌙</span> Appearance
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">🔔</span> Notifications
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">🔒</span> Privacy
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="page-title">General Settings</div>
+    <div class="page-subtitle">Manage your Fiscal Fox preferences</div>
+
+    <div class="section">
+      <div class="section-header">Appearance</div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Night Mode</div>
+          <div class="setting-desc">Apply a dark filter to all web pages</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="nightModeToggle" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Theme</div>
+          <div class="setting-desc">Choose the extension popup color scheme</div>
+        </div>
+        <select class="setting-select">
+          <option>Dark</option>
+          <option>Light</option>
+          <option>System</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">Behavior</div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Remember Night Mode per Site</div>
+          <div class="setting-desc">Automatically apply night mode on sites you've enabled it for</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="rememberPerSite" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Show Badge on Icon</div>
+          <div class="setting-desc">Display a badge on the toolbar icon when night mode is active</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="showBadge" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">About</div>
+      <div class="version-tag">Fiscal Fox v1.0.0</div>
+    </div>
+  </main>
+
+</body>
+</html>

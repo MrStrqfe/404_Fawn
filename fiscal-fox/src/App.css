@@ -21,6 +21,24 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+.settings-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  line-height: 1;
+  z-index: 10;
+}
+
+.settings-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 
 .App-logo {
   height: 40vmin;

@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Fiscal Fox Chrome Extension",
   "permissions": ["activeTab", "scripting"],
+  "options_page": "settings.html",
   "action": {
     "default_popup": "index.html",
     "default_icon": {

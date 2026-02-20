@@ -208,6 +208,90 @@
       color: #6b7280;
       padding: 16px 20px;
     }
+
+    /* Colour blind preset buttons */
+    .preset-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .preset-btn {
+      background: #2a2d36;
+      border: 1px solid #3a3d48;
+      border-radius: 6px;
+      color: #a0a5b0;
+      font-size: 12px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .preset-btn:hover {
+      background: #33374a;
+      color: #e0e0e0;
+    }
+
+    .preset-btn.active {
+      background: #1e3a5f;
+      color: #61dafb;
+      border-color: #61dafb;
+    }
+
+    /* RGB sliders */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      border-bottom: 1px solid #2a2d36;
+    }
+
+    .slider-row:last-child {
+      border-bottom: none;
+    }
+
+    .slider-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #a0a5b0;
+      width: 14px;
+      flex-shrink: 0;
+    }
+
+    .slider-track {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: #3a3d48;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .slider-track::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #61dafb;
+      cursor: pointer;
+    }
+
+    .slider-value {
+      font-size: 12px;
+      color: #a0a5b0;
+      width: 32px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .sliders-block.disabled .slider-track {
+      opacity: 0.35;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -228,6 +312,9 @@
     </div>
     <div class="nav-item">
       <span class="nav-icon">🔒</span> Privacy
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">♿</span> Accessibility
     </div>
   </nav>
 
@@ -281,6 +368,57 @@
           <input type="checkbox" id="showBadge" />
           <span class="toggle-slider"></span>
         </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">Accessibility</div>
+
+      <!-- Master enable toggle -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Colour Blind Mode</div>
+          <div class="setting-desc">Apply a colour filter to web pages to help distinguish colours</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="colourBlindToggle" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <!-- Preset selector -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Preset</div>
+          <div class="setting-desc">Select a type to pre-fill the RGB sliders below</div>
+        </div>
+        <div class="preset-group">
+          <button class="preset-btn active" data-preset="none">None</button>
+          <button class="preset-btn" data-preset="deuteranopia">Deuteranopia</button>
+          <button class="preset-btn" data-preset="protanopia">Protanopia</button>
+          <button class="preset-btn" data-preset="tritanopia">Tritanopia</button>
+          <button class="preset-btn" data-preset="monochromacy">Monochromacy</button>
+          <button class="preset-btn" id="customPresetBtn" data-preset="custom" style="display:none">Custom</button>
+        </div>
+      </div>
+
+      <!-- RGB sliders -->
+      <div class="sliders-block" id="cbSlidersBlock">
+        <div class="slider-row">
+          <span class="slider-label">R</span>
+          <input type="range" class="slider-track" id="cbSliderR" min="0" max="200" value="100" />
+          <span class="slider-value" id="cbValR">100</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">G</span>
+          <input type="range" class="slider-track" id="cbSliderG" min="0" max="200" value="100" />
+          <span class="slider-value" id="cbValG">100</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">B</span>
+          <input type="range" class="slider-track" id="cbSliderB" min="0" max="200" value="100" />
+          <span class="slider-value" id="cbValB">100</span>
+        </div>
       </div>
     </div>
 

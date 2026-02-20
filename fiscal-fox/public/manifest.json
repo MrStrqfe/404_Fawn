@@ -3,7 +3,7 @@
   "name": "Fiscal Fox",
   "version": "1.0.0",
   "description": "Fiscal Fox Chrome Extension",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "options_page": "settings.html",
   "action": {
     "default_popup": "index.html",

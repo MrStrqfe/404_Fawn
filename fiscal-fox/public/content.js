@@ -117,7 +117,8 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
   if ('colourBlindPreset' in changes) {
     colourBlindPreset = changes.colourBlindPreset.newValue || 'none';
-    // Don't apply yet — slider values arrive in the same storage batch
+    needsApply = true;
+    // If RGB values also changed, the block below will re-fetch and call applyFilters() itself
   }
   if ('colourBlindR' in changes || 'colourBlindG' in changes || 'colourBlindB' in changes) {
     // Re-fetch all slider values atomically to avoid stale reads

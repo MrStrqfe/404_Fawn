@@ -1,5 +1,5 @@
 <h1 align="center">
-    Fiscal Fox
+    🦊 Fiscal Fox
 </h1>
 
 | Bank   | Status |

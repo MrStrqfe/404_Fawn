@@ -1,10 +1,20 @@
 /* global chrome */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
   const [nightMode, setNightMode] = useState(false);
+
+  useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (!tabs[0]) return;
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'getState' }, (response) => {
+        if (chrome.runtime.lastError) return;
+        if (response) setNightMode(response.nightMode);
+      });
+    });
+  }, []);
 
   const toggleNightMode = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {

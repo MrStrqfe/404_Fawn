@@ -3,6 +3,7 @@
   "name": "Fiscal Fox",
   "version": "1.0.0",
   "description": "Fiscal Fox Chrome Extension",
+  "permissions": ["activeTab", "scripting"],
   "action": {
     "default_popup": "index.html",
     "default_icon": {
@@ -15,5 +16,11 @@
     "16": "logo192.png",
     "48": "logo192.png",
     "128": "logo192.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
 }

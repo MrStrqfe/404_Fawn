@@ -127,3 +127,15 @@ function onSliderChange() {
 cbSliderR.addEventListener('input', onSliderChange);
 cbSliderG.addEventListener('input', onSliderChange);
 cbSliderB.addEventListener('input', onSliderChange);
+
+// ── Key Term Highlighting ────────────────────────────────────────────
+
+const keyTermsToggle = document.getElementById('keyTermsToggle');
+
+chrome.storage.sync.get(['keyTermsEnabled'], (data) => {
+  keyTermsToggle.checked = !!data.keyTermsEnabled;
+});
+
+keyTermsToggle.addEventListener('change', () => {
+  chrome.storage.sync.set({ keyTermsEnabled: keyTermsToggle.checked });
+});

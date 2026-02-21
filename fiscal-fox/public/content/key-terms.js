@@ -16,7 +16,7 @@ function buildTermRegex(dict) {
   // Sort longest first so multi-word terms match before their sub-terms
   const terms = Object.keys(dict).sort((a, b) => b.length - a.length);
   const escaped = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  return new RegExp('(' + escaped.join('|') + ')', 'gi');
+  return new RegExp('\\b(' + escaped.join('|') + ')\\b', 'gi');
 }
 
 function getTooltip() {

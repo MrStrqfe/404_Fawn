@@ -1,0 +1,97 @@
+{
+  "Utilities": {
+    "icon": "💡",
+    "keywords": [
+      "BC Hydro", "EPCOR", "ATCO", "ENMAX", "FortisBC", "Shaw", "Telus",
+      "Bell", "Rogers", "Fido", "Freedom Mobile", "Manitoba Hydro", "SaskPower",
+      "Nova Scotia Power", "NB Power", "Hydro One", "Hydro Quebec",
+      "Newfoundland Power", "PEI Energy", "ATCO Gas", "ENMAX Energy",
+      "EPCOR Utilities", "City of Edmonton Utilities", "City of Calgary Utilities",
+      "Pacific Gas", "SaskEnergy", "Union Gas", "Enbridge Gas", "Alectra"
+    ]
+  },
+  "Groceries": {
+    "icon": "🛒",
+    "keywords": [
+      "Safeway", "Sobeys", "Loblaws", "Real Canadian Superstore", "Superstore",
+      "Save-On-Foods", "Save On Foods", "Costco", "T&T", "No Frills", "FreshCo",
+      "Walmart", "Co-op", "IGA", "Metro", "Giant Tiger", "Food Basics",
+      "Fresh Street Market", "Commisso", "Thrifty Foods", "Country Grocer",
+      "Choices Markets", "Donald's Market", "Nesters Market", "Whole Foods",
+      "Nature's Fare", "Community Natural Foods"
+    ]
+  },
+  "Dining": {
+    "icon": "🍔",
+    "keywords": [
+      "Tim Hortons", "Tims", "McDonald's", "McDonalds", "Subway", "Starbucks",
+      "A&W", "KFC", "Wendy's", "Burger King", "DoorDash", "Skip the Dishes",
+      "SkipTheDishes", "Uber Eats", "Harvey's", "Swiss Chalet", "Boston Pizza",
+      "Panago", "Earls", "Moxies", "Joey Restaurant", "Second Cup", "Pie Hole",
+      "Pizza Hut", "Domino's", "Papa John's", "Mary Brown's", "Popeyes",
+      "Dairy Queen", "Baskin Robbins", "Pizza", "Restaurant", "Cafe", "Coffee",
+      "Bistro", "Sushi", "Ramen", "Pho", "Grill", "Bar & Grill", "Diner"
+    ]
+  },
+  "Health": {
+    "icon": "💊",
+    "keywords": [
+      "Shoppers Drug Mart", "Rexall", "London Drugs", "Pharmasave",
+      "Familiprix", "Lawton's", "Guardian Pharmacy", "Pharmacy", "Pharmacie",
+      "Medical", "Dental", "Dentist", "Hospital", "Clinic", "Optician",
+      "Optometrist", "Chiropractor", "Physiotherapy", "Physio", "Massage",
+      "Lab Results", "Diagnostics", "Ambulance", "Eye Care", "Vision Care"
+    ]
+  },
+  "Transportation": {
+    "icon": "🚗",
+    "keywords": [
+      "Shell", "Petro Canada", "Petrocanada", "Esso", "Husky", "Parkland",
+      "Ultramar", "Chevron", "Pioneer", "MacEwen", "Fuel", "Gas Station",
+      "Uber", "Lyft", "Taxi", "Parking", "Impark", "Indigo Park", "Green P",
+      "ETS", "CTrain", "TransLink", "Translink", "OC Transpo", "TTC", "STM",
+      "Winnipeg Transit", "Calgary Transit", "Edmonton Transit", "BC Transit",
+      "Via Rail", "Air Canada", "WestJet", "Porter Airlines", "Flair Airlines",
+      "Greyhound", "Megabus", "Auto Repair", "Tire", "Motor", "Car Wash",
+      "BCAA", "CAA", "Uhaul", "Budget Rent", "Enterprise Rent"
+    ]
+  },
+  "Entertainment": {
+    "icon": "🎬",
+    "keywords": [
+      "Netflix", "Spotify", "Apple Music", "Google Play", "Amazon Prime",
+      "Amazon Music", "Cineplex", "Disney+", "Disney Plus", "Crave", "CBC Gem",
+      "YouTube Premium", "Twitch", "Steam", "Xbox", "PlayStation", "Nintendo",
+      "Audible", "Kindle", "Kobo", "Indigo", "Paramount+", "Hulu",
+      "Curiosity Stream", "MUBI", "Shudder", "BritBox", "AMC+",
+      "Gaming", "League of Legends", "Fortnite", "Epic Games", "EA Games"
+    ]
+  },
+  "Shopping": {
+    "icon": "🛍️",
+    "keywords": [
+      "Amazon", "IKEA", "Home Depot", "Rona", "Lowe's", "Canadian Tire",
+      "Indigo", "Chapters", "Best Buy", "Sport Chek", "Winners", "HomeSense",
+      "TK Maxx", "Hudson's Bay", "The Bay", "Simons", "Aritzia", "Lululemon",
+      "H&M", "Zara", "Old Navy", "Gap", "Sephora", "Nordstrom", "Ssense",
+      "MEC", "Arc'teryx", "Reitmans", "Atmosphere", "Mark's Work Wearhouse",
+      "Mark's", "Staples", "Office Depot", "PetSmart", "Petland", "Global Pet"
+    ]
+  },
+  "Banking & Finance": {
+    "icon": "🏦",
+    "keywords": [
+      "Interac", "e-Transfer", "eTransfer", "E-Transfer", "Payment to",
+      "Loan Payment", "Mortgage Payment", "Line of Credit", "LOC Payment",
+      "Insurance Premium", "Manulife", "Sun Life", "Great-West Life",
+      "Wawanesa", "Intact Insurance", "Aviva", "Co-operators",
+      "RRSP Contribution", "TFSA Contribution", "Investment Transfer",
+      "Wealthsimple", "Questrade", "TD Direct", "RBC Direct", "BMO InvestorLine",
+      "Service Charge", "Account Fee", "NSF Fee", "Overdraft"
+    ]
+  },
+  "Other": {
+    "icon": "📦",
+    "keywords": []
+  }
+}

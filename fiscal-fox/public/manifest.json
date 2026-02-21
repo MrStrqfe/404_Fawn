@@ -24,24 +24,24 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
+      "matches": ["<all_urls>"],
       "js": [
+        "text-to-speech/state.js",
+        "text-to-speech/speech.js",
+        "text-to-speech/domReader.js",
+        "text-to-speech/uiOverlay.js",
+        "text-to-speech/controller.js",
         "content/night-mode.js",
-        "content/remote-handler.js"
+        "content/remote-handler.js",
+        "content/key-terms.js",
+        "content/summarize-transactions.js"
       ]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": [
-        "dictionary.json",
-        "OpenDyslexic-Regular.otf"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "resources": ["dictionary.json", "OpenDyslexic-Regular.otf", "categories.json"],
+      "matches": ["<all_urls>"]
     }
   ],
   "commands": {

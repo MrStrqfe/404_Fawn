@@ -68,6 +68,52 @@
   color: #61dafb;
 }
 
+.summarize-btn {
+  margin-top: 16px;
+  padding: 10px 20px;
+  background: #61dafb;
+  color: #1a1d23;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 220px;
+  transition: background 0.15s, box-shadow 0.15s, opacity 0.15s;
+  letter-spacing: 0.2px;
+}
+
+.summarize-btn:hover:not(:disabled) {
+  background: #89e8ff;
+}
+
+.summarize-btn:disabled {
+  background: #3a3f50;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.summarize-btn.active {
+  background: #1a1d23;
+  color: #61dafb;
+  border: 2px solid #61dafb;
+  box-shadow: 0 0 10px rgba(97, 218, 251, 0.35);
+}
+
+.summarize-btn.active:hover {
+  background: rgba(97, 218, 251, 0.08);
+}
+
+.bank-hint {
+  font-size: 11px;
+  color: #555;
+  margin-top: 8px;
+  max-width: 200px;
+  text-align: center;
+  line-height: 1.4;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

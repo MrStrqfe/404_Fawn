@@ -21,12 +21,12 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content/night-mode.js", "content/key-terms.js"]
+      "js": ["content/night-mode.js", "content/key-terms.js", "content/summarize-transactions.js"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["dictionary.json"],
+      "resources": ["dictionary.json", "categories.json"],
       "matches": ["<all_urls>"]
     }
   ]

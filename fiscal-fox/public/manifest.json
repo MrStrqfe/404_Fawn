@@ -22,18 +22,14 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-<<<<<<< HEAD
-      "js": ["content.js", "text-to-speech.js"],
+      "js": ["text-to-speech.js", "content/night-mode.js", "content/key-terms.js"],
       "run_at": "document_idle"
-=======
-      "js": ["content/night-mode.js", "content/key-terms.js"]
     }
   ],
   "web_accessible_resources": [
     {
       "resources": ["dictionary.json"],
       "matches": ["<all_urls>"]
->>>>>>> 3ee1bb147b40716cf3664bd6838c4864a443cf97
     }
   ]
 }

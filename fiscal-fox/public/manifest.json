@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Fiscal Fox Chrome Extension",
   "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
   "options_page": "settings.html",
   "action": {
     "default_popup": "index.html",
@@ -21,6 +22,10 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
+<<<<<<< HEAD
+      "js": ["content.js", "text-to-speech.js"],
+      "run_at": "document_idle"
+=======
       "js": ["content/night-mode.js", "content/key-terms.js"]
     }
   ],
@@ -28,6 +33,7 @@
     {
       "resources": ["dictionary.json"],
       "matches": ["<all_urls>"]
+>>>>>>> 3ee1bb147b40716cf3664bd6838c4864a443cf97
     }
   ]
 }

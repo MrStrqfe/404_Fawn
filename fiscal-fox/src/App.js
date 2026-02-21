@@ -1,60 +1,95 @@
-/* global chrome */
-import { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* global chrome, browser */
+import { useState, useEffect } from "react";
+import "./App.css";
+
+const ext = typeof browser !== "undefined" ? browser : chrome;
 
 function App() {
   const [nightMode, setNightMode] = useState(false);
+  const [keyword, setKeyword] = useState("");
 
-  useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0]) return;
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'getState' }, (response) => {
-        if (chrome.runtime.lastError) return;
-        if (response) setNightMode(response.nightMode);
+  // helper: send message to active tab
+  const sendToActiveTab = (message, callback) => {
+    ext.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (!tabs || !tabs[0]) return;
+
+      ext.tabs.sendMessage(tabs[0].id, message, (response) => {
+        if (ext.runtime.lastError) return;
+        if (callback) callback(response);
       });
+    });
+  };
+
+  // sync state on popup open
+  useEffect(() => {
+    sendToActiveTab({ action: "getState" }, (response) => {
+      if (response?.nightMode !== undefined) {
+        setNightMode(response.nightMode);
+      }
     });
   }, []);
 
+  // toggle night mode
   const toggleNightMode = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0]) return;
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'toggleNightMode' }, (response) => {
-        if (chrome.runtime.lastError) return;
-        if (response) setNightMode(response.nightMode);
-      });
+    sendToActiveTab({ action: "toggleNightMode" }, (response) => {
+      if (response?.nightMode !== undefined) {
+        setNightMode(response.nightMode);
+      }
     });
+  };
+
+  // trigger keyword read
+  const handleSearch = () => {
+    if (!keyword.trim()) return;
+
+    sendToActiveTab({
+      action: "SEARCH_KEYWORD",
+      keyword: keyword.trim(),
+    });
+  };
+
+  // stop speech
+  const stopReading = () => {
+    sendToActiveTab({ action: "STOP_SPEECH" });
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        <button
-          className="night-mode-btn"
-          onClick={toggleNightMode}
-          title={nightMode ? 'Switch to light mode' : 'Switch to night mode'}
-        >
-          {nightMode ? '☀️' : '🌙'}
-        </button>
-        <button
-          className="settings-btn"
-          title="Settings"
-          onClick={() => chrome.runtime.openOptionsPage()}
-        >
-          ⚙️
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {/* Top controls */}
+        <div className="top-nav">
+          <button onClick={toggleNightMode} title="Toggle Night Mode">
+            {nightMode ? "☀️" : "🌙"}
+          </button>
+
+          <button
+            onClick={() => ext.runtime.openOptionsPage()}
+            title="Settings"
+          >
+            ⚙️
+          </button>
+        </div>
+
+        {/* Accessibility Section */}
+        <div className="search-section">
+          <input
+            type="text"
+            placeholder="Search for a keyword..."
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            className="search-input"
+          />
+
+          <div className="button-group">
+            <button onClick={handleSearch} className="read-btn">
+              🔊 Read Paragraph
+            </button>
+
+            <button onClick={stopReading} className="stop-btn">
+              🛑 Stop
+            </button>
+          </div>
+        </div>
       </header>
     </div>
   );

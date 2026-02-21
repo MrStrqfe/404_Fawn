@@ -99,9 +99,13 @@ function removeKeyTermHighlighting() {
   if (tooltipEl) tooltipEl.style.display = 'none';
 }
 
-// ── Page load: read key terms setting and apply ──────────────────────
-chrome.storage.sync.get(['keyTermsEnabled'], (data) => {
-  keyTermsEnabled = !!data.keyTermsEnabled;
+// ── Page load: read active profile key terms setting and apply ────────
+chrome.storage.sync.get(['profiles', 'activeProfile'], (data) => {
+  const activeProfile = data.activeProfile || 'Mom';
+  const profiles = data.profiles || {};
+  const pData = profiles[activeProfile] || {};
+
+  keyTermsEnabled = !!pData.keyTermsEnabled;
   if (keyTermsEnabled) applyKeyTermHighlighting();
 });
 
@@ -109,12 +113,22 @@ chrome.storage.sync.get(['keyTermsEnabled'], (data) => {
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'sync') return;
 
-  if ('keyTermsEnabled' in changes) {
-    keyTermsEnabled = !!changes.keyTermsEnabled.newValue;
-    if (keyTermsEnabled) {
-      applyKeyTermHighlighting();
-    } else {
-      removeKeyTermHighlighting();
-    }
+  if (changes.profiles || changes.activeProfile) {
+    chrome.storage.sync.get(['profiles', 'activeProfile'], (data) => {
+      const activeProfile = data.activeProfile || 'Mom';
+      const profiles = data.profiles || {};
+      const pData = profiles[activeProfile] || {};
+
+      const oldKeyTerms = keyTermsEnabled;
+      keyTermsEnabled = !!pData.keyTermsEnabled;
+
+      if (keyTermsEnabled !== oldKeyTerms) {
+        if (keyTermsEnabled) {
+          applyKeyTermHighlighting();
+        } else {
+          removeKeyTermHighlighting();
+        }
+      }
+    });
   }
 });

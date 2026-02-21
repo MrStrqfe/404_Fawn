@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fawn — Remote Access</title>
+    <style>
+        :root {
+            --bg-color: #1a1c23;
+            --card-bg: #2a2d36;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a5b0;
+            --accent: #4CAF50;
+            --accent-hover: #45a049;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Floating Flowers */
+        .bg-flower-1 {
+            position: fixed;
+            top: -50px;
+            left: -80px;
+            opacity: 0.15;
+            width: 400px;
+            transform: rotate(15deg);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bg-flower-2 {
+            position: fixed;
+            bottom: -100px;
+            right: -80px;
+            opacity: 0.15;
+            width: 500px;
+            transform: rotate(-20deg);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .header-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-logo img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid var(--accent);
+        }
+
+        .page-title {
+            font-family: 'Cooper Black', sans-serif;
+            font-size: 28px;
+            color: var(--accent);
+            margin: 0;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Dual panels */
+        .view-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger-hover);
+        }
+
+        /* Forms */
+        .code-display {
+            font-size: 42px;
+            letter-spacing: 8px;
+            font-family: monospace;
+            color: var(--accent);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 24px;
+            letter-spacing: 5px;
+            font-family: monospace;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .code-input:focus {
+            border-color: var(--accent);
+        }
+
+        .instruction-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 14px;
+            color: var(--accent);
+        }
+
+        .pulse {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulseAnim 1.5s infinite;
+        }
+
+        @keyframes pulseAnim {
+            0% {
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background decorations -->
+    <img src="Flowers.png" alt="" class="bg-flower-1">
+    <img src="Flowers2-removebg-preview.png" alt="" class="bg-flower-2">
+
+    <div class="container">
+        <div class="header-logo">
+            <img src="Gemini_Generated_Image_2i67l42i67l42i67-removebg-preview.png" alt="Fawn Profile">
+            <div class="page-title">Remote Access</div>
+            <div class="page-subtitle">Request or provide secure assistance.</div>
+        </div>
+
+        <!-- MAIN MENU -->
+        <div id="view-menu" class="view-panel active">
+            <button class="action-btn btn-primary" id="btnGetHelp">Get Help (Spectated)</button>
+            <button class="action-btn btn-secondary" id="btnGiveHelp">Give Help (Helper)</button>
+        </div>
+
+        <!-- GET HELP (Spectated) VIEW -->
+        <div id="view-get-help" class="view-panel">
+            <div class="instruction-text">
+                Share this secure 6-digit code with your helper.
+                <b>While connected, your screen will have a yellow border.</b>
+            </div>
+            <div class="code-display" id="generatedCode">------</div>
+            <div class="status-indicator">
+                <div class="pulse"></div>
+                Waiting for connection...
+            </div>
+
+            <div
+                style="margin-top: 10px; font-size: 12px; color: #ef4444; border: 1px dashed #dc2626; padding: 10px; border-radius: 6px;">
+                ⚠️ <b>Emergency Stop:</b> Press <code>Ctrl + Alt + B</code> at any time to instantly kill the session.
+            </div>
+
+            <button class="action-btn btn-danger" id="btnCancelGetHelp" style="margin-top: 20px;">Cancel & Go
+                Back</button>
+        </div>
+
+        <!-- GIVE HELP (Helper) VIEW -->
+        <div id="view-give-help" class="view-panel">
+            <div class="instruction-text">
+                Enter the 6-digit access code provided by the person requesting help.
+            </div>
+            <input type="text" class="code-input" id="inputAccessCode" placeholder="123456" maxlength="6"
+                autocomplete="off" />
+            <button class="action-btn btn-primary" id="btnConnectHelper">Connect</button>
+            <br />
+            <a class="back-link" id="btnBackFromGiveHelp">⟵ Back to Main Menu</a>
+        </div>
+
+    </div>
+
+    <script src="remote-access.js"></script>
+</body>
+
+</html>

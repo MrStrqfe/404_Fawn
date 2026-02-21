@@ -207,6 +207,7 @@ const customPresetBtn = document.getElementById('customPresetBtn');
 
 const keyTermsToggle = document.getElementById('keyTermsToggle');
 const dyslexicReadingToggle = document.getElementById('dyslexicReadingToggle');
+const ttsToggle = document.getElementById('ttsToggle');
 
 
 // ── Unified Loading ───────────────────────────────────────────────
@@ -224,7 +225,8 @@ function loadSettingsForProfile() {
       colourBlindG: 100,
       colourBlindB: 100,
       keyTermsEnabled: false,
-      dyslexicReadingEnabled: false
+      dyslexicReadingEnabled: false,
+      ttsEnabled: false
     };
 
     // General toggles
@@ -248,6 +250,7 @@ function loadSettingsForProfile() {
     // Accessibility
     keyTermsToggle.checked = !!pData.keyTermsEnabled;
     dyslexicReadingToggle.checked = !!pData.dyslexicReadingEnabled;
+    ttsToggle.checked = !!pData.ttsEnabled;
   });
 }
 
@@ -361,6 +364,7 @@ cbSliderB.addEventListener('input', onSliderChange);
 // ── Accessibility Toggles ────────────────────────────────────────────
 keyTermsToggle.addEventListener('change', () => saveSetting('keyTermsEnabled', keyTermsToggle.checked));
 dyslexicReadingToggle.addEventListener('change', () => saveSetting('dyslexicReadingEnabled', dyslexicReadingToggle.checked));
+ttsToggle.addEventListener('change', () => saveSetting('ttsEnabled', ttsToggle.checked));
 
 
 // ── Keyboard Navigation (Vimium-style) ───────────────────────────────

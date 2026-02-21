@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Fiscal Fox — Settings</title>
@@ -70,6 +71,11 @@
     .nav-item.active {
       background: #1e3a5f;
       color: #61dafb;
+    }
+
+    .nav-item:focus-visible {
+      outline: 2px solid #61dafb;
+      outline-offset: -2px;
     }
 
     .nav-item .nav-icon {
@@ -178,11 +184,11 @@
       transition: transform 0.2s;
     }
 
-    .toggle input:checked + .toggle-slider {
+    .toggle input:checked+.toggle-slider {
       background: #61dafb;
     }
 
-    .toggle input:checked + .toggle-slider::before {
+    .toggle input:checked+.toggle-slider::before {
       transform: translateX(20px);
     }
 
@@ -294,6 +300,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <nav class="sidebar">
@@ -301,19 +308,19 @@
       <span class="logo-icon">🦊</span>
       <span>Fiscal Fox</span>
     </div>
-    <div class="nav-item active">
+    <div class="nav-item active" tabindex="0">
       <span class="nav-icon">⚙️</span> General
     </div>
-    <div class="nav-item">
+    <div class="nav-item" tabindex="0">
       <span class="nav-icon">🌙</span> Appearance
     </div>
-    <div class="nav-item">
+    <div class="nav-item" tabindex="0">
       <span class="nav-icon">🔔</span> Notifications
     </div>
-    <div class="nav-item">
+    <div class="nav-item" tabindex="0">
       <span class="nav-icon">🔒</span> Privacy
     </div>
-    <div class="nav-item">
+    <div class="nav-item" tabindex="0">
       <span class="nav-icon">♿</span> Accessibility
     </div>
   </nav>
@@ -373,6 +380,18 @@
 
     <div class="section">
       <div class="section-header">Accessibility</div>
+
+      <!-- Dyslexic Reading -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">Dyslexic Reading</div>
+          <div class="setting-desc">Change the page font to OpenDyslexic to improve readability</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="dyslexicReadingToggle" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
 
       <!-- Master enable toggle -->
       <div class="setting-row">
@@ -442,4 +461,5 @@
 
   <script src="settings.js"></script>
 </body>
+
 </html>

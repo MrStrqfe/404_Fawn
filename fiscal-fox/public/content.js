@@ -1,20 +1,21 @@
 const hostname = window.location.hostname;
 
 // ── State ────────────────────────────────────────────────────────────
-let nightModeEnabled   = false;
+let nightModeEnabled = false;
 let colourBlindEnabled = false;
-let colourBlindPreset  = 'none';
+let colourBlindPreset = 'none';
 let colourBlindR = 100, colourBlindG = 100, colourBlindB = 100;
-let keyTermsEnabled    = false;
+let keyTermsEnabled = false;
+let dyslexicReadingEnabled = false;
 
 // ── Matrix builder ───────────────────────────────────────────────────
 function buildMatrixValues(r, g, b, preset) {
   // Monochromacy: fixed ITU-R BT.709 luminance-weighted greyscale
   if (preset === 'monochromacy') {
     return '0.2126 0.7152 0.0722 0 0  ' +
-           '0.2126 0.7152 0.0722 0 0  ' +
-           '0.2126 0.7152 0.0722 0 0  ' +
-           '0 0 0 1 0';
+      '0.2126 0.7152 0.0722 0 0  ' +
+      '0.2126 0.7152 0.0722 0 0  ' +
+      '0 0 0 1 0';
   }
   const rS = r / 100;
   const gS = g / 100;
@@ -24,14 +25,14 @@ function buildMatrixValues(r, g, b, preset) {
   const gOff = Math.max(0, (1 - gS) / 2);
   const bOff = Math.max(0, (1 - bS) / 2);
   return `${rS} ${rOff} ${rOff} 0 0  ` +
-         `${gOff} ${gS} ${gOff} 0 0  ` +
-         `${bOff} ${bOff} ${bS} 0 0  ` +
-         `0 0 0 1 0`;
+    `${gOff} ${gS} ${gOff} 0 0  ` +
+    `${bOff} ${bOff} ${bS} 0 0  ` +
+    `0 0 0 1 0`;
 }
 
 // ── Unified filter application ───────────────────────────────────────
 function applyFilters() {
-  const svgId   = 'fiscal-fox-cb-svg';
+  const svgId = 'fiscal-fox-cb-svg';
   const styleId = 'fiscal-fox-active-filter';
 
   // Manage the SVG colour matrix element
@@ -58,7 +59,7 @@ function applyFilters() {
   // Build combined filter string (CB first so it operates on natural colours)
   const parts = [];
   if (colourBlindEnabled) parts.push('url(#fiscal-fox-cb-filter)');
-  if (nightModeEnabled)   parts.push('invert(1) hue-rotate(180deg)');
+  if (nightModeEnabled) parts.push('invert(1) hue-rotate(180deg)');
 
   // Manage the unified style element
   let style = document.getElementById(styleId);
@@ -85,18 +86,20 @@ function applyFilters() {
 // ── Page load: read all settings and apply ───────────────────────────
 chrome.storage.sync.get(
   ['globalNightMode', 'rememberPerSite', 'nightModeSites',
-   'colourBlindEnabled', 'colourBlindPreset', 'colourBlindR', 'colourBlindG', 'colourBlindB',
-   'keyTermsEnabled'],
+    'colourBlindEnabled', 'colourBlindPreset', 'colourBlindR', 'colourBlindG', 'colourBlindB',
+    'keyTermsEnabled', 'dyslexicReadingEnabled'],
   (data) => {
     const perSite = data.rememberPerSite && data.nightModeSites && data.nightModeSites[hostname];
-    nightModeEnabled   = !!(data.globalNightMode || perSite);
+    nightModeEnabled = !!(data.globalNightMode || perSite);
     colourBlindEnabled = !!data.colourBlindEnabled;
-    colourBlindPreset  = data.colourBlindPreset || 'none';
-    colourBlindR       = data.colourBlindR ?? 100;
-    colourBlindG       = data.colourBlindG ?? 100;
-    colourBlindB       = data.colourBlindB ?? 100;
-    keyTermsEnabled    = !!data.keyTermsEnabled;
+    colourBlindPreset = data.colourBlindPreset || 'none';
+    colourBlindR = data.colourBlindR ?? 100;
+    colourBlindG = data.colourBlindG ?? 100;
+    colourBlindB = data.colourBlindB ?? 100;
+    keyTermsEnabled = !!data.keyTermsEnabled;
+    dyslexicReadingEnabled = !!data.dyslexicReadingEnabled;
     applyFilters();
+    applyDyslexicFont();
     if (keyTermsEnabled) applyKeyTermHighlighting();
   }
 );
@@ -125,9 +128,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
     chrome.storage.sync.get(
       ['colourBlindR', 'colourBlindG', 'colourBlindB', 'colourBlindPreset'],
       (d) => {
-        colourBlindR      = d.colourBlindR ?? 100;
-        colourBlindG      = d.colourBlindG ?? 100;
-        colourBlindB      = d.colourBlindB ?? 100;
+        colourBlindR = d.colourBlindR ?? 100;
+        colourBlindG = d.colourBlindG ?? 100;
+        colourBlindB = d.colourBlindB ?? 100;
         colourBlindPreset = d.colourBlindPreset || 'none';
         applyFilters();
       }
@@ -144,6 +147,11 @@ chrome.storage.onChanged.addListener((changes, area) => {
     } else {
       removeKeyTermHighlighting();
     }
+  }
+
+  if ('dyslexicReadingEnabled' in changes) {
+    dyslexicReadingEnabled = !!changes.dyslexicReadingEnabled.newValue;
+    applyDyslexicFont();
   }
 });
 
@@ -271,3 +279,33 @@ function removeKeyTermHighlighting() {
   });
   if (tooltipEl) tooltipEl.style.display = 'none';
 }
+
+// ── Dyslexic Reading Font Application ────────────────────────────────
+
+function applyDyslexicFont() {
+  const styleId = 'fiscal-fox-dyslexic-font';
+  let styleEl = document.getElementById(styleId);
+
+  if (dyslexicReadingEnabled) {
+    if (!styleEl) {
+      const fontUrl = chrome.runtime.getURL('OpenDyslexic-Regular.otf');
+      styleEl = document.createElement('style');
+      styleEl.id = styleId;
+      styleEl.textContent = `
+        @font-face {
+          font-family: 'OpenDyslexic';
+          src: url('${fontUrl}') format('opentype');
+          font-weight: normal;
+          font-style: normal;
+        }
+        * {
+          font-family: 'OpenDyslexic', sans-serif !important;
+        }
+      `;
+      document.head.appendChild(styleEl);
+    }
+  } else {
+    if (styleEl) styleEl.remove();
+  }
+}
+

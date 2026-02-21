@@ -83,77 +83,82 @@ function applyFilters() {
     'img, video, iframe, canvas, picture { ' + mediaRule + ' }';
 }
 
-// ── Page load: read night mode + colourblind settings and apply ──────
-chrome.storage.sync.get(
-  ['globalNightMode', 'rememberPerSite', 'nightModeSites',
-    'colourBlindEnabled', 'colourBlindPreset', 'colourBlindR', 'colourBlindG', 'colourBlindB',
-    'keyTermsEnabled', 'dyslexicReadingEnabled'],
-  (data) => {
-    const perSite = data.rememberPerSite && data.nightModeSites && data.nightModeSites[hostname];
-    nightModeEnabled = !!(data.globalNightMode || perSite);
-    colourBlindEnabled = !!data.colourBlindEnabled;
-    colourBlindPreset = data.colourBlindPreset || 'none';
-    colourBlindR = data.colourBlindR ?? 100;
-    colourBlindG = data.colourBlindG ?? 100;
-    colourBlindB = data.colourBlindB ?? 100;
-    keyTermsEnabled = !!data.keyTermsEnabled;
-    dyslexicReadingEnabled = !!data.dyslexicReadingEnabled;
-    applyFilters();
-    applyDyslexicFont();
-    if (keyTermsEnabled) applyKeyTermHighlighting();
-  }
-);
+// ── Page load: read active profile and apply settings ─────────────────
+chrome.storage.sync.get(['profiles', 'activeProfile', 'rememberPerSite', 'nightModeSites'], (data) => {
+  const activeProfile = data.activeProfile || 'Mom';
+  const profiles = data.profiles || {};
+  const pData = profiles[activeProfile] || {};
+
+  const perSite = data.rememberPerSite && data.nightModeSites && data.nightModeSites[hostname];
+  nightModeEnabled = !!(pData.globalNightMode || perSite);
+
+  colourBlindEnabled = !!pData.colourBlindEnabled;
+  colourBlindPreset = pData.colourBlindPreset || 'none';
+  colourBlindR = pData.colourBlindR ?? 100;
+  colourBlindG = pData.colourBlindG ?? 100;
+  colourBlindB = pData.colourBlindB ?? 100;
+
+  keyTermsEnabled = !!pData.keyTermsEnabled;
+  dyslexicReadingEnabled = !!pData.dyslexicReadingEnabled;
+
+  applyFilters();
+  applyDyslexicFont();
+  if (keyTermsEnabled) applyKeyTermHighlighting();
+});
+
 
 // ── Real-time updates from settings page ─────────────────────────────
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'sync') return;
 
-  let needsApply = false;
+  // We only care if 'profiles' or 'activeProfile' changed
+  if (changes.profiles || changes.activeProfile) {
+    chrome.storage.sync.get(['profiles', 'activeProfile', 'rememberPerSite', 'nightModeSites'], (data) => {
+      const activeProfile = data.activeProfile || 'Mom';
+      const profiles = data.profiles || {};
+      const pData = profiles[activeProfile] || {};
 
-  if ('globalNightMode' in changes) {
-    nightModeEnabled = !!changes.globalNightMode.newValue;
-    needsApply = true;
-  }
-  if ('colourBlindEnabled' in changes) {
-    colourBlindEnabled = !!changes.colourBlindEnabled.newValue;
-    needsApply = true;
-  }
-  if ('colourBlindPreset' in changes) {
-    colourBlindPreset = changes.colourBlindPreset.newValue || 'none';
-    needsApply = true;
-    // If RGB values also changed, the block below will re-fetch and call applyFilters() itself
-  }
-  if ('colourBlindR' in changes || 'colourBlindG' in changes || 'colourBlindB' in changes) {
-    // Re-fetch all slider values atomically to avoid stale reads
-    chrome.storage.sync.get(
-      ['colourBlindR', 'colourBlindG', 'colourBlindB', 'colourBlindPreset'],
-      (d) => {
-        colourBlindR = d.colourBlindR ?? 100;
-        colourBlindG = d.colourBlindG ?? 100;
-        colourBlindB = d.colourBlindB ?? 100;
-        colourBlindPreset = d.colourBlindPreset || 'none';
+      const oldNightMode = nightModeEnabled;
+      const oldColourBlind = colourBlindEnabled;
+      const oldPreset = colourBlindPreset;
+      const oldR = colourBlindR, oldG = colourBlindG, oldB = colourBlindB;
+      const oldKeyTerms = keyTermsEnabled;
+      const oldDyslexic = dyslexicReadingEnabled;
+
+      const perSite = data.rememberPerSite && data.nightModeSites && data.nightModeSites[hostname];
+      nightModeEnabled = !!(pData.globalNightMode || perSite);
+
+      colourBlindEnabled = !!pData.colourBlindEnabled;
+      colourBlindPreset = pData.colourBlindPreset || 'none';
+      colourBlindR = pData.colourBlindR ?? 100;
+      colourBlindG = pData.colourBlindG ?? 100;
+      colourBlindB = pData.colourBlindB ?? 100;
+
+      keyTermsEnabled = !!pData.keyTermsEnabled;
+      dyslexicReadingEnabled = !!pData.dyslexicReadingEnabled;
+
+      // Apply changes if any visual settings altered
+      if (
+        nightModeEnabled !== oldNightMode ||
+        colourBlindEnabled !== oldColourBlind ||
+        colourBlindPreset !== oldPreset ||
+        colourBlindR !== oldR || colourBlindG !== oldG || colourBlindB !== oldB
+      ) {
         applyFilters();
       }
-    );
-    return; // applyFilters called inside async callback above
-  }
 
-  if (needsApply) applyFilters();
+      if (keyTermsEnabled !== oldKeyTerms) {
+        if (keyTermsEnabled) applyKeyTermHighlighting();
+        else removeKeyTermHighlighting();
+      }
 
-  if ('keyTermsEnabled' in changes) {
-    keyTermsEnabled = !!changes.keyTermsEnabled.newValue;
-    if (keyTermsEnabled) {
-      applyKeyTermHighlighting();
-    } else {
-      removeKeyTermHighlighting();
-    }
-  }
-
-  if ('dyslexicReadingEnabled' in changes) {
-    dyslexicReadingEnabled = !!changes.dyslexicReadingEnabled.newValue;
-    applyDyslexicFont();
+      if (dyslexicReadingEnabled !== oldDyslexic) {
+        applyDyslexicFont();
+      }
+    });
   }
 });
+
 
 // ── Messages from popup ───────────────────────────────────────────────
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
@@ -166,8 +171,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     nightModeEnabled = !nightModeEnabled;
     applyFilters();
 
-    // Save state per site if rememberPerSite is enabled
-    chrome.storage.sync.get(['rememberPerSite', 'nightModeSites'], (data) => {
+    // The popup toggle needs to save back to the correct profile
+    chrome.storage.sync.get(['profiles', 'activeProfile', 'rememberPerSite', 'nightModeSites'], (data) => {
+      const activeProfile = data.activeProfile || 'Mom';
+      const profiles = data.profiles || {};
+      if (!profiles[activeProfile]) profiles[activeProfile] = {};
+
+      profiles[activeProfile].globalNightMode = nightModeEnabled;
+      chrome.storage.sync.set({ profiles });
+
+      // Save state per site if rememberPerSite is enabled
       if (data.rememberPerSite) {
         const sites = data.nightModeSites || {};
         sites[hostname] = nightModeEnabled;

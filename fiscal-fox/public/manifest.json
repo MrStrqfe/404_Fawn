@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Fiscal Fox",
+  "name": "Fawn",
   "version": "1.0.0",
-  "description": "Fiscal Fox Chrome Extension",
+  "description": "Fawn Chrome Extension",
   "permissions": [
     "activeTab",
     "scripting",
@@ -12,15 +12,15 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "logo192.png",
-      "48": "logo192.png",
-      "128": "logo192.png"
+      "16": "Gemini_Generated_Image_2i67l42i67l42i67-removebg-preview.png",
+      "48": "Gemini_Generated_Image_2i67l42i67l42i67-removebg-preview.png",
+      "128": "Gemini_Generated_Image_2i67l42i67l42i67-removebg-preview.png"
     }
   },
   "icons": {
-    "16": "logo192.png",
-    "48": "logo192.png",
-    "128": "logo192.png"
+    "16": "Gemini_Generated_Image_2i67l42i67l42i67-removebg-preview.png",
+    "48": "Gemini_Generated_Image_2i67l42i67l42i67-removebg-preview.png",
+    "128": "Gemini_Generated_Image_2i67l42i67l42i67-removebg-preview.png"
   },
   "content_scripts": [
     {
@@ -28,7 +28,8 @@
         "<all_urls>"
       ],
       "js": [
-        "content.js"
+        "content/night-mode.js",
+        "content/remote-handler.js"
       ]
     }
   ],
@@ -48,7 +49,7 @@
       "suggested_key": {
         "default": "Alt+Shift+F"
       },
-      "description": "Open Fiscal Fox"
+      "description": "Open Fawn"
     }
   }
 }

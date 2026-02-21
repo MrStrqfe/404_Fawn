@@ -1,28 +1,4 @@
-const nightModeToggle = document.getElementById('nightModeToggle');
-const rememberPerSiteToggle = document.getElementById('rememberPerSite');
-const showBadgeToggle = document.getElementById('showBadge');
-
-// Load all saved settings at once
-chrome.storage.sync.get(['globalNightMode', 'rememberPerSite', 'showBadge'], (data) => {
-  nightModeToggle.checked = !!data.globalNightMode;
-  rememberPerSiteToggle.checked = !!data.rememberPerSite;
-  showBadgeToggle.checked = data.showBadge !== false; // default true
-});
-
-// Persist each toggle on change
-nightModeToggle.addEventListener('change', () => {
-  chrome.storage.sync.set({ globalNightMode: nightModeToggle.checked });
-});
-
-rememberPerSiteToggle.addEventListener('change', () => {
-  chrome.storage.sync.set({ rememberPerSite: rememberPerSiteToggle.checked });
-});
-
-showBadgeToggle.addEventListener('change', () => {
-  chrome.storage.sync.set({ showBadge: showBadgeToggle.checked });
-});
-
-// ── Colour Blind Mode ───────────────────────────────────────────────
+// ── Colour Blind Mode Settings ───────────────────────────────────────
 
 const CB_PRESETS = {
   none:         { r: 100, g: 100, b: 100 },
@@ -127,15 +103,3 @@ function onSliderChange() {
 cbSliderR.addEventListener('input', onSliderChange);
 cbSliderG.addEventListener('input', onSliderChange);
 cbSliderB.addEventListener('input', onSliderChange);
-
-// ── Key Term Highlighting ────────────────────────────────────────────
-
-const keyTermsToggle = document.getElementById('keyTermsToggle');
-
-chrome.storage.sync.get(['keyTermsEnabled'], (data) => {
-  keyTermsToggle.checked = !!data.keyTermsEnabled;
-});
-
-keyTermsToggle.addEventListener('change', () => {
-  chrome.storage.sync.set({ keyTermsEnabled: keyTermsToggle.checked });
-});

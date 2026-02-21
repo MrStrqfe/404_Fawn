@@ -3,7 +3,11 @@
   "name": "Fiscal Fox",
   "version": "1.0.0",
   "description": "Fiscal Fox Chrome Extension",
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
   "options_page": "settings.html",
   "action": {
     "default_popup": "index.html",
@@ -21,13 +25,26 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content/night-mode.js", "content/key-terms.js"]
+      "js": ["content.js"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["dictionary.json"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "dictionary.json",
+        "OpenDyslexic-Regular.otf"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
-  ]
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+F"
+      },
+      "description": "Open Fiscal Fox"
+    }
+  }
 }

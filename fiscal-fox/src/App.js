@@ -1,79 +1,76 @@
-/* global chrome */
+/* global chrome, browser */
 import { useState, useEffect } from "react";
-import logo from "./logo.svg";
 import "./App.css";
+
+const ext = typeof browser !== "undefined" ? browser : chrome;
 
 function App() {
   const [nightMode, setNightMode] = useState(false);
   const [keyword, setKeyword] = useState("");
 
-  // Sync night mode state when the popup opens
-  useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0]) return;
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        { action: "getState" },
-        (response) => {
-          if (chrome.runtime.lastError) return;
-          if (response) setNightMode(response.nightMode);
-        },
-      );
-    });
-  }, []);
+  // helper: send message to active tab
+  const sendToActiveTab = (message, callback) => {
+    ext.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (!tabs || !tabs[0]) return;
 
-  const toggleNightMode = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0]) return;
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        { action: "toggleNightMode" },
-        (response) => {
-          if (chrome.runtime.lastError) return;
-          if (response) setNightMode(response.nightMode);
-        },
-      );
-    });
-  };
-
-  // NEW: Function to trigger the keyword search on the page
-  const handleSearch = () => {
-    if (!keyword.trim()) return;
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0]) return;
-      chrome.tabs.sendMessage(tabs[0].id, {
-        action: "SEARCH_KEYWORD",
-        keyword: keyword,
+      ext.tabs.sendMessage(tabs[0].id, message, (response) => {
+        if (ext.runtime.lastError) return;
+        if (callback) callback(response);
       });
     });
   };
 
-  // NEW: Function to stop all reading
-  const stopReading = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0]) return;
-      chrome.tabs.sendMessage(tabs[0].id, { action: "STOP_SPEECH" });
+  // sync state on popup open
+  useEffect(() => {
+    sendToActiveTab({ action: "getState" }, (response) => {
+      if (response?.nightMode !== undefined) {
+        setNightMode(response.nightMode);
+      }
     });
+  }, []);
+
+  // toggle night mode
+  const toggleNightMode = () => {
+    sendToActiveTab({ action: "toggleNightMode" }, (response) => {
+      if (response?.nightMode !== undefined) {
+        setNightMode(response.nightMode);
+      }
+    });
+  };
+
+  // trigger keyword read
+  const handleSearch = () => {
+    if (!keyword.trim()) return;
+
+    sendToActiveTab({
+      action: "SEARCH_KEYWORD",
+      keyword: keyword.trim(),
+    });
+  };
+
+  // stop speech
+  const stopReading = () => {
+    sendToActiveTab({ action: "STOP_SPEECH" });
   };
 
   return (
     <div className="App">
       <header className="App-header">
+        {/* Top controls */}
         <div className="top-nav">
           <button onClick={toggleNightMode} title="Toggle Night Mode">
             {nightMode ? "☀️" : "🌙"}
           </button>
+
           <button
-            onClick={() => chrome.runtime.openOptionsPage()}
+            onClick={() => ext.runtime.openOptionsPage()}
             title="Settings"
           >
             ⚙️
           </button>
         </div>
 
-        <img src={logo} className="App-logo" alt="logo" />
-
-        {/* --- NEW ACCESSIBILITY SECTION --- */}
+        {/* Accessibility Section */}
         <div className="search-section">
           <input
             type="text"
@@ -82,18 +79,17 @@ function App() {
             onChange={(e) => setKeyword(e.target.value)}
             className="search-input"
           />
+
           <div className="button-group">
             <button onClick={handleSearch} className="read-btn">
               🔊 Read Paragraph
             </button>
+
             <button onClick={stopReading} className="stop-btn">
               🛑 Stop
             </button>
           </div>
         </div>
-        {/* --------------------------------- */}
-
-        <p>Fiscal Fox Accessibility Helper</p>
       </header>
     </div>
   );

@@ -1,70 +1,105 @@
-# Getting Started with Create React App
+# Fawn
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Chrome extension that makes online banking accessible for everyone. Built for older adults, people with visual impairments, dyslexia, and anyone who finds financial websites overwhelming.
 
-## Available Scripts
+## What It Does
 
-In the project directory, you can run:
+**Fawn** sits in your browser and adds accessibility features to any banking website:
 
-### `npm start`
+- **Transaction Summary** -- Automatically reads your banking page and organizes transactions into categories (Groceries, Dining, Utilities, etc.) with spending totals in a clean sidebar.
+- **Night Mode** -- Reduces eye strain with a dark mode filter that works on any website.
+- **Colour Blind Filters** -- Preset filters for Deuteranopia, Protanopia, Tritanopia, and Monochromacy, plus custom RGB sliders.
+- **Dyslexic Reading Mode** -- Applies the OpenDyslexic font across the page for improved readability.
+- **Financial Term Definitions** -- Highlights jargon like "amortization" or "APR" and shows plain-language definitions on hover.
+- **Text-to-Speech** -- Reads page content aloud. Search by keyword, then navigate with Space/K/Esc.
+- **Remote Assistance** -- Lets a trusted helper view and interact with your screen via a simple 6-character code. Includes an emergency stop button and keyboard shortcut to end the session at any time.
+- **Profiles** -- Save different settings for different family members (Mom, Dad, Son, Daughter, etc.).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Supported Banks
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Works with major Canadian banks including RBC, TD, CIBC, Scotiabank, BMO, Tangerine, ATB, National Bank, Simplii, HSBC Canada, and more.
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React (popup UI)
+- Chrome Extensions Manifest V3
+- WebRTC + Socket.IO (remote assistance)
+- Web Speech API (text-to-speech)
+- Shadow DOM (isolated sidebar that won't break banking site styles)
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js 14+
+- Chrome or Chromium browser
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Install
 
-### `npm run eject`
+```bash
+git clone <https://github.com/MrStrqfe/404_Fawn.git>
+cd fiscal-fox
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Build & Load
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm run build
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Open `chrome://extensions/` in Chrome
+2. Enable **Developer mode** (top right toggle)
+3. Click **Load unpacked**
+4. Select the `public` folder from this project
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The Fawn icon will appear in your toolbar. Click it to open the popup and access all features.
 
-## Learn More
+### Development
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm start       # Start dev server with hot reload
+npm test        # Run tests
+npm run build   # Production build
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> **Note:** Changes to content scripts (anything in `public/content/`) require clicking the Reload button on `chrome://extensions/` to take effect.
 
-### Code Splitting
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+public/
+  manifest.json              # Chrome extension config
+  content/
+    summarize-transactions.js  # Transaction extraction & categorization
+    night-mode.js              # Night mode, colour blind, dyslexic font
+    key-terms.js               # Financial term highlighting
+    remote-handler.js          # Remote session safety features
+  text-to-speech/
+    controller.js              # TTS state machine & controls
+    speech.js                  # Speech synthesis wrapper
+    domReader.js               # DOM keyword search
+    uiOverlay.js               # Keyboard input overlay
+  settings.html               # Settings page
+  settings.js                 # Profile management
+  remote-access.html          # Remote assistance UI
+  remote-access.js            # WebRTC connection logic
+  categories.json             # Transaction category definitions
+  dictionary.json             # Financial term definitions
+src/
+  App.js                     # React popup component
+  App.css                    # Popup styles
+```
 
-### Analyzing the Bundle Size
+## Safety Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Remote assistance was designed with vulnerable users in mind:
 
-### Making a Progressive Web App
+- Yellow border appears around the page during a remote session
+- Emergency Stop button always visible in the bottom-right corner
+- Keyboard shortcut **Ctrl+Alt+B** (Cmd+Option+B on Mac) instantly ends the session
+- Local user input always takes priority over remote input (2-second cooldown)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## License
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project was built at a hackathon.

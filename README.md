@@ -1,8 +1,22 @@
-<h1 align="center">
-    🦊 Fawn
-</h1>
+<p align="center">
+  <img width="200" height="200" alt="Fawn" src="https://github.com/user-attachments/assets/cca5f0c9-8143-4d7a-8926-faf317fdfccb" />
+</p>
 
-A Chrome extension that makes online banking accessible for everyone. Built for older adults, people with visual impairments, dyslexia, and anyone who finds financial websites overwhelming.
+<h1 align="center">Fawn</h1>
+
+<p align="center">
+  <strong>A Chrome extension that makes online banking accessible for everyone.</strong><br>
+  Built for older adults, people with visual impairments, dyslexia, and anyone who finds financial websites overwhelming.
+</p>
+
+<p align="center">
+  <a href="#what-it-does">Features</a> &nbsp;&bull;&nbsp;
+  <a href="#supported-banks">Banks</a> &nbsp;&bull;&nbsp;
+  <a href="#getting-started">Getting Started</a> &nbsp;&bull;&nbsp;
+  <a href="#tech-stack">Tech Stack</a>
+</p>
+
+---
 
 ## What It Does
 
@@ -39,7 +53,7 @@ Works with major Canadian banks including RBC, TD, CIBC, Scotiabank, BMO, Tanger
 ### Install
 
 ```bash
-git clone https://github.com/MrStrqfe/404_Fawn.git
+git clone <https://github.com/MrStrqfe/404_Fawn.git>
 cd fiscal-fox
 npm install
 ```

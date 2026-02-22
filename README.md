@@ -39,7 +39,7 @@ Works with major Canadian banks including RBC, TD, CIBC, Scotiabank, BMO, Tanger
 ### Install
 
 ```bash
-git clone <https://github.com/MrStrqfe/404_Fawn.git>
+git clone https://github.com/MrStrqfe/404_Fawn.git
 cd fiscal-fox
 npm install
 ```

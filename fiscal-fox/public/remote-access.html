@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Fawn — Remote Access</title>
+    <title>Fawn — Visual Help</title>
     <style>
         :root {
             --bg-color: #1a1c23;
@@ -251,7 +251,7 @@
     <div class="container">
         <div class="header-logo">
             <img src="Gemini_Generated_Image_2i67l42i67l42i67-removebg-preview.png" alt="Fawn Profile">
-            <div class="page-title">Remote Access</div>
+            <div class="page-title">Visual Help</div>
             <div class="page-subtitle">Request or provide secure assistance.</div>
         </div>
 
@@ -264,7 +264,7 @@
         <!-- GET HELP (Spectated) VIEW -->
         <div id="view-get-help" class="view-panel">
             <div class="instruction-text">
-                Share this secure 6-digit code with your helper.
+                Share this secure 6-character code with your helper.
                 <b>While connected, your screen will have a yellow border.</b>
             </div>
             <div class="code-display" id="generatedCode">------</div>
@@ -284,18 +284,39 @@
 
         <!-- GIVE HELP (Helper) VIEW -->
         <div id="view-give-help" class="view-panel">
-            <div class="instruction-text">
-                Enter the 6-digit access code provided by the person requesting help.
+            <div id="helper-setup">
+                <div class="instruction-text">
+                    Enter the 6-character access code provided by the person requesting help.
+                </div>
+                <input type="text" class="code-input" id="inputAccessCode" placeholder="ABC123" maxlength="6"
+                    autocomplete="off" style="text-transform: uppercase;" />
+                <button class="action-btn btn-primary" id="btnConnectHelper">Connect</button>
+                <div class="status-indicator" id="helperStatus"
+                    style="display:none; width:100%; justify-content:center;">
+                    <div class="pulse"></div>
+                    Connecting...
+                </div>
+                <br />
+                <a class="back-link" id="btnBackFromGiveHelp">⟵ Back to Main Menu</a>
             </div>
-            <input type="text" class="code-input" id="inputAccessCode" placeholder="123456" maxlength="6"
-                autocomplete="off" />
-            <button class="action-btn btn-primary" id="btnConnectHelper">Connect</button>
-            <br />
-            <a class="back-link" id="btnBackFromGiveHelp">⟵ Back to Main Menu</a>
+
+            <div id="helper-video-container"
+                style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:9999; flex-direction:column;">
+                <video id="remoteVideo" autoplay playsinline
+                    style="flex-grow:1; width:100%; object-fit:contain; cursor:crosshair; pointer-events:auto;"></video>
+                <div
+                    style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:10000; background:rgba(0,0,0,0.5); padding:10px; border-radius:8px;">
+                    <button class="action-btn btn-secondary" id="btnFullscreen" style="margin:0; width:auto;">Full
+                        Screen</button>
+                    <button class="action-btn btn-danger" id="btnDisconnectHelper"
+                        style="margin:0; width:auto;">Disconnect</button>
+                </div>
+            </div>
         </div>
 
     </div>
 
+    <script src="socket.io.min.js"></script>
     <script src="remote-access.js"></script>
 </body>
 

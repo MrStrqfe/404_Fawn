@@ -6,7 +6,11 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "storage"
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "options_page": "settings.html",
   "action": {
@@ -24,7 +28,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "<all_urls>"
+      ],
       "js": [
         "text-to-speech/state.js",
         "text-to-speech/speech.js",
@@ -40,8 +46,14 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["dictionary.json", "OpenDyslexic-Regular.otf", "categories.json"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "dictionary.json",
+        "OpenDyslexic-Regular.otf",
+        "categories.json"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "commands": {

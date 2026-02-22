@@ -31,9 +31,9 @@
 - **Remote Assistance** -- Lets a trusted helper view and interact with your screen via a simple 6-character code. Includes an emergency stop button and keyboard shortcut to end the session at any time.
 - **Profiles** -- Save different settings for different family members (Mom, Dad, Son, Daughter, etc.).
 
-## Supported Banks
+## Design Philosophy
 
-Works with major Canadian banks including RBC, TD, CIBC, Scotiabank, BMO, Tangerine, ATB, National Bank, Simplii, HSBC Canada, and more.
+Many websites are not accessible for every person who browses the internet. While extensions exist to help accommodate people from all backgrounds, installing multiple extensions is very unwieldy for the non-technical user. We seek to bring features from many popular browser extensions and merge them into one monolithic source. This makes the process much easier for a user who is not familiar with the extensions space and simplifies all the configuration into one location.
 
 ## Tech Stack
 
@@ -71,13 +71,6 @@ npm run build
 
 The Fawn icon will appear in your toolbar. Click it to open the popup and access all features.
 
-### Development
-
-```bash
-npm start       # Start dev server with hot reload
-npm test        # Run tests
-npm run build   # Production build
-```
 
 > **Note:** Changes to content scripts (anything in `public/content/`) require clicking the Reload button on `chrome://extensions/` to take effect.
 

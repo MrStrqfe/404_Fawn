@@ -116,6 +116,6 @@ Remote assistance was designed with vulnerable users in mind:
 - Keyboard shortcut **Ctrl+Alt+B** (Cmd+Option+B on Mac) instantly ends the session
 - Local user input always takes priority over remote input (2-second cooldown)
 
-## License
+## Credits
 
-This project was built at a hackathon.
+This project was built at a hackathon by students Jensen Lee, Ilya Sukhanov, Avishek Dangol, and Deryk Fong.
